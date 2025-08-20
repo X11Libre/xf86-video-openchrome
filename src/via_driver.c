@@ -1125,7 +1125,7 @@ VIAPreInit(ScrnInfoPtr pScrn, int flags)
     }
 #endif /* OPENCHROMEDRI */
 
-    option = xf86NewOption(strEXAOptionName, strEXAValue);
+    option = xf86newOption(strEXAOptionName, strEXAValue);
     xf86CollectOptions(pScrn, option);
 
     viaSetupDefaultOptions(pScrn);
