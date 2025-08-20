@@ -3195,6 +3195,10 @@ via_crtc_unlock(xf86CrtcPtr crtc)
                         "Exiting %s.\n", __func__));
 }
 
+/* HACK: Copied prototype from xf86_priv.h */
+_X_EXPORT /* only for int10 module, not supposed to be used by OOT modules */
+const char * xf86ModeStatusToString(ModeStatus status);
+
 static Bool
 via_crtc_mode_fixup(xf86CrtcPtr crtc, DisplayModePtr mode,
                         DisplayModePtr adjusted_mode)
