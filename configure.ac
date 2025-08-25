@@ -34,7 +34,7 @@ AC_CONFIG_AUX_DIR(.)
 AM_INIT_AUTOMAKE([foreign dist-bzip2])
 
 # Require xorg-macros: XORG_DEFAULT_OPTIONS
-m4_ifndef([XORG_MACROS_VERSION], 
+m4_ifndef([XORG_MACROS_VERSION],
           [m4_fatal([must install xorg-macros 1.3 or later before running autoconf/autogen])])
 XORG_MACROS_VERSION(1.3)
 XORG_DEFAULT_OPTIONS
@@ -47,11 +47,12 @@ AC_SYS_LARGEFILE
 
 AH_TOP([#include "xorg-server.h"])
 
+PKG_PROG_PKG_CONFIG([0.25])
 AC_ARG_WITH(xorg-module-dir,
             AS_HELP_STRING([--with-xorg-module-dir=DIR],
-                           [Default xorg module directory [[default=$libdir/xorg/modules]]]),
+                           [Default xorg module directory]),
             [moduledir="$withval"],
-            [moduledir="$libdir/xorg/modules"])
+            [moduledir=`$PKG_CONFIG --variable=moduledir xorg-server`])
 
 AC_ARG_ENABLE(dri, AS_HELP_STRING([--disable-dri],
                                   [Disable DRI support [[default=auto]]]),
