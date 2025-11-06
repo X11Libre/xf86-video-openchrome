@@ -344,15 +344,15 @@ CH7xxxModeI2C(xf86OutputPtr output, DisplayModePtr mode)
     VIAPtr pVia = VIAPTR(pScrn);
     viaTVRecPtr pVIATV = (viaTVRecPtr) output->driver_private;
     CARD8   i, j;
-    VIABIOSTVMASKTableRec Mask;
+    VIABIOSTVMASKTableRec mask;
     struct CH7xxxTableRec Table;
 
     if (pVIATV->TVEncoder == VIA_CH7011) {
         Table = CH7011Table[CH7011ModeIndex(output, mode)];
-        Mask = ch7011MaskTable;
+        mask = ch7011MaskTable;
     } else {
         Table = CH7019Table[CH7019ModeIndex(output, mode)];
-        Mask = ch7019MaskTable;
+        mask = ch7019MaskTable;
     }
 
     DEBUG(xf86DrvMsg(pScrn->scrnIndex, X_INFO, "%s\n", __func__));
@@ -360,8 +360,8 @@ CH7xxxModeI2C(xf86OutputPtr output, DisplayModePtr mode)
     xf86I2CWriteByte(pVIATV->pVIATVI2CDev, 0x49, 0x3E);
     xf86I2CWriteByte(pVIATV->pVIATVI2CDev, 0x1E, 0xD0);
 
-    for (i = 0,j = 0; (j < Mask.numTV) && (i < VIA_BIOS_TABLE_NUM_TV_REG); i++) {
-        if (Mask.TV[i] == 0xFF) {
+    for (i = 0,j = 0; (j < mask.numTV) && (i < VIA_BIOS_TABLE_NUM_TV_REG); i++) {
+        if (mask.TV[i] == 0xFF) {
             xf86I2CWriteByte(pVIATV->pVIATVI2CDev, i, Table.TV[i]);
             j++;
         } else {
@@ -402,7 +402,7 @@ CH7xxxModeI2C(xf86OutputPtr output, DisplayModePtr mode)
     }
 
     if (pVia->IsSecondary) { /* Patch as setting 2nd path */
-        j = (CARD8)(Mask.misc2 >> 5);
+        j = (CARD8)(mask.misc2 >> 5);
         for (i = 0; i < j; i++)
             xf86I2CWriteByte(pVIATV->pVIATVI2CDev, Table.Patch2[i] & 0xFF, Table.Patch2[i] >> 8);
     }
@@ -419,15 +419,15 @@ CH7xxxModeCrtc(xf86OutputPtr output, DisplayModePtr mode)
     viaTVRecPtr pVIATV = (viaTVRecPtr) output->driver_private;
     CARD8  *CRTC, *Misc;
     int  i, j;
-    VIABIOSTVMASKTableRec Mask;
+    VIABIOSTVMASKTableRec mask;
     struct CH7xxxTableRec Table;
 
     if (pVIATV->TVEncoder == VIA_CH7011) {
         Table = CH7011Table[CH7011ModeIndex(output, mode)];
-        Mask = ch7011MaskTable;
+        mask = ch7011MaskTable;
     } else {
         Table = CH7019Table[CH7019ModeIndex(output, mode)];
-        Mask = ch7019MaskTable;
+        mask = ch7019MaskTable;
     }
 
     DEBUG(xf86DrvMsg(pScrn->scrnIndex, X_INFO, "%s\n", __func__));
@@ -447,14 +447,14 @@ CH7xxxModeCrtc(xf86OutputPtr output, DisplayModePtr mode)
         }
         Misc = Table.Misc2;
 
-        for (i = 0, j = 0; i < Mask.numCRTC2; j++) {
-            if (Mask.CRTC2[j] == 0xFF) {
+        for (i = 0, j = 0; i < mask.numCRTC2; j++) {
+            if (mask.CRTC2[j] == 0xFF) {
                 hwp->writeCrtc(hwp, j + 0x50, CRTC[j]);
                 i++;
             }
         }
 
-        if (Mask.misc2 & 0x18) {
+        if (mask.misc2 & 0x18) {
             pVIADisplay->Clock = (Misc[3] << 8) & Misc[4];
             /* VIASetUseExternalClock(hwp); */
         }
@@ -470,8 +470,8 @@ CH7xxxModeCrtc(xf86OutputPtr output, DisplayModePtr mode)
         CRTC = Table.CRTC1;
         Misc = Table.Misc1;
 
-        for (i = 0, j = 0; i < Mask.numCRTC1; j++) {
-            if (Mask.CRTC1[j] == 0xFF) {
+        for (i = 0, j = 0; i < mask.numCRTC1; j++) {
+            if (mask.CRTC1[j] == 0xFF) {
                 hwp->writeCrtc(hwp, j, CRTC[j]);
                 i++;
             }
@@ -489,7 +489,7 @@ CH7xxxModeCrtc(xf86OutputPtr output, DisplayModePtr mode)
         } else
             hwp->writeCrtc(hwp, 0x6B, Misc[2] | 0x01);
 
-        if (Mask.misc1 & 0x30) {
+        if (mask.misc1 & 0x30) {
             /* CLE266Ax use 2x XCLK */
             if ((pVia->Chipset == VIA_CLE266) &&
                 CLE266_REV_IS_AX(pVia->ChipRev))
