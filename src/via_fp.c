@@ -319,39 +319,6 @@ viaFPPrimaryHardPowerSeq(ScrnInfoPtr pScrn, Bool powerState)
 }
 
 static void
-viaFPSecondaryHardPowerSeq(ScrnInfoPtr pScrn, Bool powerState)
-{
-    DEBUG(xf86DrvMsg(pScrn->scrnIndex, X_INFO,
-                        "Entered viaFPSecondaryHardPowerSeq.\n"));
-
-    /* Use hardware FP power sequence control. */
-    viaFPSetSecondaryPowerSeqType(pScrn, TRUE);
-
-    if (powerState) {
-        /* Turn on FP display period. */
-        viaFPSetSecondaryDirectDisplayPeriod(pScrn, TRUE);
-
-        /* Turn on FP hardware power sequence. */
-        viaFPSetSecondaryHardPower(pScrn, TRUE);
-
-        /* Turn on FP back light. */
-        viaFPSetSecondaryDirectBackLightCtrl(pScrn, TRUE);
-    } else {
-        /* Turn off FP back light. */
-        viaFPSetSecondaryDirectBackLightCtrl(pScrn, FALSE);
-
-        /* Turn off FP hardware power sequence. */
-        viaFPSetSecondaryHardPower(pScrn, FALSE);
-
-        /* Turn off FP display period. */
-        viaFPSetSecondaryDirectDisplayPeriod(pScrn, FALSE);
-    }
-
-    DEBUG(xf86DrvMsg(pScrn->scrnIndex, X_INFO,
-                        "Exiting viaFPSecondaryHardPowerSeq.\n"));
-}
-
-static void
 viaFPPower(ScrnInfoPtr pScrn, int Chipset, uint32_t diPort,
             Bool powerState)
 {
