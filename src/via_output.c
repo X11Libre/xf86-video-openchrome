@@ -383,16 +383,6 @@ ViaSetSecondaryDotclock(ScrnInfoPtr pScrn, CARD32 clock)
     ViaSeqMask(hwp, 0x40, 0x00, 0x04);
 }
 
-/*
- *
- */
-static void
-ViaSetECKDotclock(ScrnInfoPtr pScrn, CARD32 clock)
-{
-    /* Does the non-pro chip have an ECK clock ? */
-    ViaSetDotclock(pScrn, clock, 0, 0x47);
-}
-
 static CARD32
 ViaComputeDotClock(unsigned clock)
 {
