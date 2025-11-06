@@ -80,6 +80,7 @@ apt-get install -y \
 	libxt-dev \
 	libxtst-dev \
 	libxv-dev \
+	libxvmc-dev \
 	mesa-common-dev \
 	meson \
 	nettle-dev \
