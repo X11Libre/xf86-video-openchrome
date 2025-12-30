@@ -237,11 +237,7 @@ ViaI2C3Address(I2CDevPtr d, I2CSlaveAddr addr)
 {
     I2CBusPtr b = d->pI2CBus;
 
-#ifdef X_NEED_I2CSTART
     if (b->I2CStart(d->pI2CBus, d->StartTimeout)) {
-#else
-    if (ViaI2C3Start(d->pI2CBus, d->StartTimeout)) {
-#endif
         if (b->I2CPutByte(d, addr & 0xFF)) {
             if ((addr & 0xF8) != 0xF0 && (addr & 0xFE) != 0x00)
                 return TRUE;
@@ -422,9 +418,7 @@ ViaI2CBus3Init(ScrnInfoPtr pScrn)
     pI2CBus->I2CPutBits = ViaI2C3SimplePutBits;
     pI2CBus->I2CGetBits = ViaI2C3SimpleGetBits;
 
-#ifdef X_NEED_I2CSTART
     pI2CBus->I2CStart = ViaI2C3Start;
-#endif
     pI2CBus->I2CAddress = ViaI2C3Address;
     pI2CBus->I2CStop = ViaI2C3Stop;
     pI2CBus->I2CPutByte = ViaI2C3PutByte;
