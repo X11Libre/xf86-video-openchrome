@@ -3554,7 +3554,6 @@ via_crtc_destroy(xf86CrtcPtr crtc)
                         "Exiting %s.\n", __func__));
 }
 
-#if GET_ABI_MAJOR(ABI_VIDEODRV_VERSION) > 2
 static void
 via_crtc_set_origin(xf86CrtcPtr crtc, int x, int y)
 {
@@ -3575,7 +3574,6 @@ via_crtc_set_origin(xf86CrtcPtr crtc, int x, int y)
     DEBUG(xf86DrvMsg(pScrn->scrnIndex, X_INFO,
                         "Exiting %s.\n", __func__));
 }
-#endif /* GET_ABI_MAJOR(ABI_VIDEODRV_VERSION) > 2 */
 
 const xf86CrtcFuncsRec via_crtc_funcs = {
     .dpms                   = via_crtc_dpms,
@@ -3594,7 +3592,5 @@ const xf86CrtcFuncsRec via_crtc_funcs = {
     .hide_cursor            = via_crtc_hide_cursor,
     .load_cursor_argb       = via_crtc_load_cursor_argb,
     .destroy                = via_crtc_destroy,
-#if GET_ABI_MAJOR(ABI_VIDEODRV_VERSION) > 2
     .set_origin             = via_crtc_set_origin,
-#endif /* GET_ABI_MAJOR(ABI_VIDEODRV_VERSION) > 2 */
 };

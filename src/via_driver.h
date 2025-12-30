@@ -43,9 +43,6 @@
 #include "xf86Crtc.h"
 #include "xf86fbman.h"
 #include "xf86RandR12.h"
-#if GET_ABI_MAJOR(ABI_VIDEODRV_VERSION) < 6
-#include "xf86Resources.h"
-#endif
 
 #include "exa.h"
 #include "fb.h"
@@ -107,13 +104,8 @@
 
 #define VIA_VQ_SIZE     (256 * 1024)
 
-#if GET_ABI_MAJOR(ABI_VIDEODRV_VERSION) < 6
-#define VIA_RES_SHARED RES_SHARED_VGA
-#define VIA_RES_UNDEF RES_UNDEFINED
-#else
 #define VIA_RES_SHARED NULL
 #define VIA_RES_UNDEF NULL
-#endif
 
 /* Video Engines */
 #define VIDEO_ENGINE_UNK    0   /* Unknown video engine */
