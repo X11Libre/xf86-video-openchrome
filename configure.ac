@@ -179,11 +179,14 @@ else
     XVMC="no"
 fi
 
+XVMC=no
+
 AC_MSG_CHECKING([whether to include KMS support])
 AC_MSG_RESULT([$DRM_KMS])
 
 if test "x$XVMC" = xyes; then
     AC_CHECK_HEADERS(pthread.h sys/ioctl.h sys/time.h time.h,,[XVMC="no"; break],)
+    AC_DEFINE(ENABLE_XVMC, 1, [enable XVMC support])
     PKG_CHECK_MODULES(XVMC, [x11 xext xvmc])
 fi
 
