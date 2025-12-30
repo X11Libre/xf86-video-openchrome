@@ -219,11 +219,5 @@ AC_DEFINE(X_NEED_I2CSTART, 1, [Compatibility define for older Xen])
 AC_SUBST([DRI_CFLAGS])
 AC_SUBST([moduledir])
 
-AC_CONFIG_FILES([
-                Makefile
-                src/xvmc/Makefile
-                src/Makefile
-                man/Makefile
-                tools/Makefile
-])
+AC_CONFIG_FILES([Makefile src/xvmc/Makefile src/Makefile man/Makefile tools/Makefile])
 AC_OUTPUT
