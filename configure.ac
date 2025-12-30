@@ -80,14 +80,12 @@ AC_ARG_ENABLE(viaregtool, AS_HELP_STRING([--enable-viaregtool],
               [TOOLS=no])
 
 # Checks for extensions
-XORG_DRIVER_CHECK_EXT(RANDR, randrproto)
-XORG_DRIVER_CHECK_EXT(RENDER, renderproto)
 XORG_DRIVER_CHECK_EXT(XV, videoproto)
 XORG_DRIVER_CHECK_EXT(XF86DRI, xextproto x11)
 XORG_DRIVER_CHECK_EXT(DPMSExtension, xextproto)
 
 # Checks for pkg-config packages
-PKG_CHECK_MODULES(XORG, [xorg-server xproto fontsproto glproto $REQUIRED_MODULES])
+PKG_CHECK_MODULES(XORG, [xorg-server xproto fontsproto glproto randrproto renderproto $REQUIRED_MODULES])
 PKG_CHECK_MODULES(XEXT, [xextproto >= 7.1])
 
 sdkdir=$(pkg-config --variable=sdkdir xorg-server)
