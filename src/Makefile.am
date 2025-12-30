@@ -27,9 +27,11 @@
 SUBDIRS = xvmc
 
 if DRI
-OPENCHROME_DRI_SRCS = \
-    via_dri.c \
-    via_xvmc.c
+OPENCHROME_DRI_SRCS = via_dri.c
+endif
+
+if XVMC
+OPENCHROME_XVMC_SRCS = via_xvmc.c
 endif
 
 if XF86DRM_MODE
@@ -67,6 +69,7 @@ openchrome_drv_la_SOURCES = \
     via_vt1632.c \
     via_xv.c \
     via_xv_overlay.c \
+    $(OPENCHROME_XVMC_SRCS) \
     $(OPENCHROME_DRI_SRCS) \
     $(OPENCHROME_KMS_SRCS)
 
