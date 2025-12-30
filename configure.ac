@@ -22,10 +22,10 @@
 
 # Initialize Autoconf
 AC_PREREQ([2.60])
-AC_INIT([xf86-video-openchrome],
+AC_INIT([xlibre-xf86-video-openchrome],
         [0.6.604],
-        [https://bugs.freedesktop.org/enter_bug.cgi?product=xorg&component=Driver/openchrome],
-        [xf86-video-openchrome])
+        [https://github.com/X11Libre/xf86-video-openchrome/issues],
+        [xlibre-xf86-video-openchrome])
 
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS([config.h])
