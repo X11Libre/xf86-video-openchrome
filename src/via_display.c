@@ -3173,6 +3173,7 @@ static Bool
 via_crtc_lock(xf86CrtcPtr crtc)
 {
     ScrnInfoPtr pScrn = crtc->scrn;
+    (void)pScrn;
 
     DEBUG(xf86DrvMsg(pScrn->scrnIndex, X_INFO,
                         "Entered %s.\n", __func__));
@@ -3187,6 +3188,7 @@ static void
 via_crtc_unlock(xf86CrtcPtr crtc)
 {
     ScrnInfoPtr pScrn = crtc->scrn;
+    (void)pScrn;
 
     DEBUG(xf86DrvMsg(pScrn->scrnIndex, X_INFO,
                         "Entered %s.\n", __func__));
@@ -3540,6 +3542,7 @@ static void
 via_crtc_destroy(xf86CrtcPtr crtc)
 {
     ScrnInfoPtr pScrn = crtc->scrn;
+    (void)pScrn;
 
     DEBUG(xf86DrvMsg(pScrn->scrnIndex, X_INFO,
                         "Entered %s.\n", __func__));
