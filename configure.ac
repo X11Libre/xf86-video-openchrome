@@ -223,9 +223,6 @@ AC_DEFINE(X_NEED_I2CSTART, 1, [Compatibility define for older Xen])
 AC_SUBST([DRI_CFLAGS])
 AC_SUBST([moduledir])
 
-DRIVER_NAME=openchrome
-AC_SUBST([DRIVER_NAME])
-
 AC_CONFIG_FILES([
                 Makefile
                 src/xvmc/Makefile

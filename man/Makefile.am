@@ -23,11 +23,11 @@
 
 drivermandir = $(DRIVER_MAN_DIR)
 
-driverman_PRE = @DRIVER_NAME@.man
+driverman_PRE = openchrome.man
 
 driverman_DATA = $(driverman_PRE:man=@DRIVER_MAN_SUFFIX@)
 
-EXTRA_DIST = @DRIVER_NAME@.man
+EXTRA_DIST = openchrome.man
 
 CLEANFILES = $(driverman_DATA)
 
@@ -54,5 +54,5 @@ SUFFIXES = .$(DRIVER_MAN_SUFFIX) .man
 .man.$(DRIVER_MAN_SUFFIX):
 	sed $(MAN_SUBSTS) < $< > $@
 
-@DRIVER_NAME@.man:
-	ln -s -f $(top_srcdir)/src/@DRIVER_NAME@.man .
+openchrome.man:
+	ln -s -f $(top_srcdir)/src/openchrome.man .
