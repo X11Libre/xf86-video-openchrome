@@ -1,43 +1,58 @@
-name: Build driver
-
 permissions:
     contents: write
-
-env:
-    MESON_BUILDDIR:  "build"
-    X11_PREFIX:      /home/runner/x11
-    X11_BUILD_DIR:   /home/runner/build-deps
 
 on:
     push:
     pull_request:
 
 jobs:
-    for-xserver-stable-25_0:
+    ubuntu:
+        strategy:
+            matrix:
+                xserver-version: [ master, xlibre-xserver-25.1.0, xlibre-xserver-25.0.0.18 ]
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
-            - uses: ./.github/actions/build-driver
+            - uses: X11Libre/action-build-driver/target/ubuntu@v0.3.7
               with:
-                  xserver-version: xlibre-xserver-25.0.0.5
+                xserver-version: ${{ matrix.xserver-version }}
 
-    for-xserver-master:
+    freebsd:
+        strategy:
+            matrix:
+                xserver-version: [ master, xlibre-xserver-25.1.0, xlibre-xserver-25.0.0.18 ]
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
-            - uses: ./.github/actions/build-driver
+            - uses: X11Libre/action-build-driver/target/freebsd@v0.3.7
               with:
-                  xserver-version: master
+                xserver-version: ${{ matrix.xserver-version }}
 
-    release:
-        name: Release pushed tag
+    dragonfly:
+        strategy:
+            matrix:
+                # xlibre-xserver-25.0.x not compiling on dragonfly yet
+                xserver-version: [ master, xlibre-xserver-25.1.0 ]
         runs-on: ubuntu-latest
-        if: ${{ startsWith(github.ref, 'refs/tags/xlibre-') }}
         steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-            - name: Create release
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  tag: ${{ github.ref_name }}
-              run: .github/scripts/github/make-release
+            - uses: X11Libre/action-build-driver/target/dragonfly@v0.3.7
+              with:
+                xserver-version: ${{ matrix.xserver-version }}
+
+    netbsd:
+        strategy:
+            matrix:
+                xserver-version: [ master, xlibre-xserver-25.1.0 ]
+        runs-on: ubuntu-latest
+        steps:
+            - uses: X11Libre/action-build-driver/target/netbsd@v0.3.7
+              with:
+                xserver-version: ${{ matrix.xserver-version }}
+
+    release-notes:
+        name:    Release pushed tag
+        runs-on: ubuntu-latest
+        if:      ${{ startsWith(github.ref, 'refs/tags/xlibre-') }}
+        needs:   [ ubuntu, freebsd, dragonfly, netbsd ]
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        steps:
+            - uses: X11Libre/action-build-driver/release@v0.3.7
