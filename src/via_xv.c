@@ -781,11 +781,7 @@ viaSetupAdaptors(ScreenPtr pScreen, XF86VideoAdaptorPtr ** adaptors)
             pPriv[j].xv_portnum = j + usedPorts;
             pPriv[j].xvErr = xve_none;
 
-#ifdef X_USE_REGION_NULL
             REGION_NULL(pScreen, &pPriv[j].clip);
-#else
-            REGION_INIT(pScreen, &pPriv[j].clip, NullBox, 1);
-#endif
         }
         usedPorts += j;
 

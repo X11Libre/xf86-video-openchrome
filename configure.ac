@@ -213,7 +213,6 @@ if test "$TOOLS" = yes; then
     AC_DEFINE(TOOLS, 1, [Enable build of registers dumper tool])
 fi
 
-AC_DEFINE(X_USE_REGION_NULL, 1, [Compatibility define for older Xen])
 AC_DEFINE(X_NEED_I2CSTART, 1, [Compatibility define for older Xen])
 
 AC_SUBST([DRI_CFLAGS])
