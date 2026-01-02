@@ -551,7 +551,7 @@ VIADRI1ScreenInit(ScreenPtr pScreen)
     pDRIInfo->ddxDriverMinorVersion = VIA_DRIDDX_VERSION_MINOR;
     pDRIInfo->ddxDriverPatchVersion = VIA_DRIDDX_VERSION_PATCH;
 #if (DRIINFO_MAJOR_VERSION == 5)
-    pDRIInfo->frameBufferPhysicalAddress = (pointer) pVia->FrameBufferBase;
+    pDRIInfo->frameBufferPhysicalAddress = (void*) pVia->FrameBufferBase;
 #else
     pDRIInfo->frameBufferPhysicalAddress = pVia->FrameBufferBase;
 #endif

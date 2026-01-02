@@ -104,13 +104,13 @@ static int ViaXvMCCreateSubpicture(ScrnInfoPtr pScrn, XvMCSubpicturePtr pSurf,
 static void ViaXvMCDestroySubpicture(ScrnInfoPtr pScrn,
                                      XvMCSubpicturePtr pSubp);
 static int viaXvMCInterceptXvAttribute(ScrnInfoPtr pScrn, Atom attribute,
-                                       INT32 value, pointer data);
+                                       INT32 value, void *data);
 static int viaXvMCInterceptPutImage(ScrnInfoPtr, short, short, short, short,
                                     short, short, short, short, int,
                                     unsigned char *, short, short, Bool,
-                                    RegionPtr, pointer, DrawablePtr);
+                                    RegionPtr, void *, DrawablePtr);
 static int viaXvMCInterceptXvGetAttribute(ScrnInfoPtr pScrn, Atom attribute,
-                                          INT32 * value, pointer data);
+                                          INT32 * value, void *data);
 
 
 /*
@@ -854,7 +854,7 @@ viaXvMCInitXv(ScrnInfoPtr pScrn, XF86VideoAdaptorPtr XvAdapt)
 
 static int
 viaXvMCInterceptXvAttribute(ScrnInfoPtr pScrn, Atom attribute,
-                            INT32 value, pointer data)
+                            INT32 value, void *data)
 {
     unsigned i;
     viaPortPrivPtr pPriv = (viaPortPrivPtr) data;
@@ -878,7 +878,7 @@ viaXvMCInterceptXvAttribute(ScrnInfoPtr pScrn, Atom attribute,
 
 static int
 viaXvMCInterceptXvGetAttribute(ScrnInfoPtr pScrn, Atom attribute,
-                               INT32 * value, pointer data)
+                               INT32 * value, void *data)
 {
     unsigned i;
     viaPortPrivPtr pPriv = (viaPortPrivPtr) data;
@@ -919,7 +919,7 @@ viaXvMCInterceptPutImage(ScrnInfoPtr pScrn, short src_x, short src_y,
                          short src_h, short drw_w, short drw_h,
                          int id, unsigned char *buf, short width,
                          short height, Bool sync, RegionPtr clipBoxes,
-                         pointer data, DrawablePtr pDraw)
+                         void *data, DrawablePtr pDraw)
 {
     viaPortPrivPtr pPriv = (viaPortPrivPtr) data;
     ViaXvMCXVPriv *vx = (ViaXvMCXVPriv *) pPriv->xvmc_priv;

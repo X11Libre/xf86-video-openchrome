@@ -198,22 +198,22 @@ fail:
 
 #ifdef XSERVER_LIBPCIACCESS
     if (pVia->BltBase) {
-        pci_device_unmap_range(pVia->PciInfo, (pointer) pVia->BltBase,
+        pci_device_unmap_range(pVia->PciInfo, (void*) pVia->BltBase,
                                VIA_MMIO_BLTSIZE);
     }
 
     if (pVia->MapBase) {
-        pci_device_unmap_range(pVia->PciInfo, (pointer) pVia->MapBase,
+        pci_device_unmap_range(pVia->PciInfo, (void*) pVia->MapBase,
                                VIA_MMIO_REGSIZE);
     }
 #else
     if (pVia->BltBase) {
-        xf86UnMapVidMem(pScrn->scrnIndex, (pointer) pVia->BltBase,
+        xf86UnMapVidMem(pScrn->scrnIndex, (void*) pVia->BltBase,
                         VIA_MMIO_BLTSIZE);
     }
 
     if (pVia->MapBase) {
-        xf86UnMapVidMem(pScrn->scrnIndex, (pointer) pVia->MapBase,
+        xf86UnMapVidMem(pScrn->scrnIndex, (void*) pVia->MapBase,
                         VIA_MMIO_REGSIZE);
     }
 #endif
@@ -238,22 +238,22 @@ viaUnmapMMIO(ScrnInfoPtr pScrn)
 
 #ifdef XSERVER_LIBPCIACCESS
     if (pVia->BltBase) {
-        pci_device_unmap_range(pVia->PciInfo, (pointer) pVia->BltBase,
+        pci_device_unmap_range(pVia->PciInfo, (void*) pVia->BltBase,
                                VIA_MMIO_BLTSIZE);
     }
 
     if (pVia->MapBase) {
-        pci_device_unmap_range(pVia->PciInfo, (pointer) pVia->MapBase,
+        pci_device_unmap_range(pVia->PciInfo, (void*) pVia->MapBase,
                                VIA_MMIO_REGSIZE);
     }
 #else
     if (pVia->BltBase) {
-        xf86UnMapVidMem(pScrn->scrnIndex, (pointer) pVia->BltBase,
+        xf86UnMapVidMem(pScrn->scrnIndex, (void*) pVia->BltBase,
                         VIA_MMIO_BLTSIZE);
     }
 
     if (pVia->MapBase) {
-        xf86UnMapVidMem(pScrn->scrnIndex, (pointer) pVia->MapBase,
+        xf86UnMapVidMem(pScrn->scrnIndex, (void*) pVia->MapBase,
                         VIA_MMIO_REGSIZE);
     }
 #endif
@@ -327,7 +327,7 @@ viaMapFB(ScrnInfoPtr pScrn)
     }
 
     xf86UnMapVidMem(pScrn->scrnIndex,
-                    (pointer) tmp, pVia->videoRambytes);
+                    (void*) tmp, pVia->videoRambytes);
 
     /*
      * And, as if this wasn't enough, 2.6 series kernels don't
@@ -342,7 +342,7 @@ viaMapFB(ScrnInfoPtr pScrn)
     }
 
     xf86UnMapVidMem(pScrn->scrnIndex,
-                    (pointer) tmp, pVia->videoRambytes);
+                    (void*) tmp, pVia->videoRambytes);
     /*
      * End of hack.
      */
@@ -382,12 +382,12 @@ viaUnmapFB(ScrnInfoPtr pScrn)
 
 #ifdef XSERVER_LIBPCIACCESS
     if (pVia->FBBase) {
-        pci_device_unmap_range(pVia->PciInfo, (pointer) pVia->FBBase,
+        pci_device_unmap_range(pVia->PciInfo, (void*) pVia->FBBase,
                                pVia->videoRambytes);
     }
 #else
     if (pVia->FBBase) {
-        xf86UnMapVidMem(pScrn->scrnIndex, (pointer) pVia->FBBase,
+        xf86UnMapVidMem(pScrn->scrnIndex, (void*) pVia->FBBase,
                         pVia->videoRambytes);
     }
 #endif

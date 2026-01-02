@@ -91,16 +91,16 @@ static vidCopyFunc viaFastVidCpy = NULL;
  */
 static unsigned viaSetupAdaptors(ScreenPtr pScreen,
     XF86VideoAdaptorPtr ** adaptors);
-static void viaStopVideo(ScrnInfoPtr, pointer, Bool);
+static void viaStopVideo(ScrnInfoPtr, void *, Bool);
 static void viaQueryBestSize(ScrnInfoPtr, Bool,
-    short, short, short, short, unsigned int *, unsigned int *, pointer);
+    short, short, short, short, unsigned int *, unsigned int *, void*);
 static int viaQueryImageAttributes(ScrnInfoPtr,
     int, unsigned short *, unsigned short *, int *, int *);
-static int viaGetPortAttribute(ScrnInfoPtr, Atom, INT32 *, pointer);
-static int viaSetPortAttribute(ScrnInfoPtr, Atom, INT32, pointer);
+static int viaGetPortAttribute(ScrnInfoPtr, Atom, INT32 *, void*);
+static int viaSetPortAttribute(ScrnInfoPtr, Atom, INT32, void*);
 static int viaPutImage(ScrnInfoPtr, short, short, short, short, short, short,
     short, short, int, unsigned char *, short, short, Bool,
-    RegionPtr, pointer, DrawablePtr);
+    RegionPtr, void*, DrawablePtr);
 static void nv12Blit(unsigned char *nv12Chroma,
     const unsigned char *uBuffer,
     const unsigned char *vBuffer,
@@ -753,7 +753,7 @@ viaSetupAdaptors(ScreenPtr pScreen, XF86VideoAdaptorPtr ** adaptors)
         /* The adapter can handle 1 port simultaneously */
         viaAdaptPtr[i]->nPorts = numPorts;
         viaAdaptPtr[i]->pPortPrivates = pdevUnion;
-        viaAdaptPtr[i]->pPortPrivates->ptr = (pointer) pPriv;
+        viaAdaptPtr[i]->pPortPrivates->ptr = (void*) pPriv;
         viaAdaptPtr[i]->nAttributes = NUM_ATTRIBUTES_G;
         viaAdaptPtr[i]->pAttributes = AttributesG;
 
@@ -796,7 +796,7 @@ viaSetupAdaptors(ScreenPtr pScreen, XF86VideoAdaptorPtr ** adaptors)
 }
 
 static void
-viaStopVideo(ScrnInfoPtr pScrn, pointer data, Bool exit)
+viaStopVideo(ScrnInfoPtr pScrn, void *data, Bool exit)
 {
     VIAPtr pVia = VIAPTR(pScrn);
     viaPortPrivPtr pPriv = (viaPortPrivPtr) data;
@@ -822,7 +822,7 @@ viaStopVideo(ScrnInfoPtr pScrn, pointer data, Bool exit)
 
 static int
 viaSetPortAttribute(ScrnInfoPtr pScrn,
-        Atom attribute, INT32 value, pointer data)
+        Atom attribute, INT32 value, void *data)
 {
     VIAPtr pVia = VIAPTR(pScrn);
     vmmtr viaVidEng = (vmmtr) (pVia->MapBase + 0x200);
@@ -883,7 +883,7 @@ viaSetPortAttribute(ScrnInfoPtr pScrn,
 
 static int
 viaGetPortAttribute(ScrnInfoPtr pScrn,
-        Atom attribute, INT32 * value, pointer data)
+        Atom attribute, INT32 * value, void *data)
 {
     viaPortPrivPtr pPriv = (viaPortPrivPtr) data;
 
@@ -930,7 +930,7 @@ viaQueryBestSize(ScrnInfoPtr pScrn,
     Bool motion,
     short vid_w, short vid_h,
     short drw_w, short drw_h,
-    unsigned int *p_w, unsigned int *p_h, pointer data)
+    unsigned int *p_w, unsigned int *p_h, void *data)
 {
     DBG_DD(ErrorF(" via_xv.c : viaQueryBestSize :\n"));
     *p_w = drw_w;
@@ -1172,7 +1172,7 @@ viaPutImage(ScrnInfoPtr pScrn,
         short drw_w, short drw_h,
         int id, unsigned char *buf,
         short width, short height, Bool sync, RegionPtr clipBoxes,
-        pointer data, DrawablePtr pDraw)
+        void *data, DrawablePtr pDraw)
 {
     VIAPtr pVia = VIAPTR(pScrn);
     viaPortPrivPtr pPriv = (viaPortPrivPtr) data;
