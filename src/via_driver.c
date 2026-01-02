@@ -76,7 +76,7 @@ static Bool VIAProbe(DriverPtr drv, int flags);
 #endif
 
 static Bool VIAPreInit(ScrnInfoPtr pScrn, int flags);
-static Bool VIAScreenInit(SCREEN_INIT_ARGS_DECL);
+static Bool VIAScreenInit(ScreenPtr pScreen, int argc, char **argv);
 
 
 int gVIAEntityIndex = -1;
@@ -212,17 +212,14 @@ VIASetup(pointer module, pointer opts, int *errmaj, int *errmin)
 #endif /* XFree86LOADER */
 
 static Bool
-VIASwitchMode(SWITCH_MODE_ARGS_DECL)
+VIASwitchMode(ScrnInfoPtr pScrn, DisplayModePtr mode)
 {
-    SCRN_INFO_PTR(arg);
-
     return xf86SetSingleMode(pScrn, mode, RR_Rotate_0);
 }
 
 static void
-VIAAdjustFrame(ADJUST_FRAME_ARGS_DECL)
+VIAAdjustFrame(ScrnInfoPtr pScrn, int x, int y)
 {
-    SCRN_INFO_PTR(arg);
     xf86CrtcConfigPtr xf86_config = XF86_CRTC_CONFIG_PTR(pScrn);
     int i;
 
@@ -289,9 +286,8 @@ VIAEnterVT_internal(ScrnInfoPtr pScrn, int flags)
 }
 
 static Bool
-VIAEnterVT(VT_FUNC_ARGS_DECL)
+VIAEnterVT(ScrnInfoPtr pScrn)
 {
-    SCRN_INFO_PTR(arg);
     return VIAEnterVT_internal(pScrn, 0);
 }
 
@@ -353,9 +349,8 @@ VIALeaveVT_internal(ScrnInfoPtr pScrn, int flags)
 }
 
 static void
-VIALeaveVT(VT_FUNC_ARGS_DECL)
+VIALeaveVT(ScrnInfoPtr pScrn)
 {
-    SCRN_INFO_PTR(arg);
     VIALeaveVT_internal(pScrn, 0);
 }
 
@@ -388,9 +383,8 @@ VIAFreeRec(ScrnInfoPtr pScrn)
  * get called routinely at the end of a server generation.
  */
 static void
-VIAFreeScreen(FREE_SCREEN_ARGS_DECL)
+VIAFreeScreen(ScrnInfoPtr pScrn)
 {
-    SCRN_INFO_PTR(arg);
     VIAPtr pVia = VIAPTR(pScrn);
 
     DEBUG(xf86DrvMsg(pScrn->scrnIndex, X_INFO, "VIAFreeScreen\n"));
@@ -1316,7 +1310,7 @@ VIACreateScreenResources(ScreenPtr pScreen)
 }
 
 static Bool
-VIACloseScreen(CLOSE_SCREEN_ARGS_DECL)
+VIACloseScreen(ScreenPtr pScreen)
 {
     ScrnInfoPtr pScrn = xf86ScreenToScrn(pScreen);
     xf86CrtcConfigPtr   xf86_config = XF86_CRTC_CONFIG_PTR(pScrn);
@@ -1357,7 +1351,7 @@ VIACloseScreen(CLOSE_SCREEN_ARGS_DECL)
 
     /* Is the display currently visible? */
     if (pScrn->vtSema)
-        VIALeaveVT(VT_FUNC_ARGS(0));
+        VIALeaveVT(NULL);
 
     xf86_cursors_fini(pScreen);
 
@@ -1395,11 +1389,11 @@ VIACloseScreen(CLOSE_SCREEN_ARGS_DECL)
 
     pScrn->vtSema = FALSE;
     pScreen->CloseScreen = pVia->CloseScreen;
-    return (*pScreen->CloseScreen) (CLOSE_SCREEN_ARGS);
+    return (*pScreen->CloseScreen) (pScreen);
 }
 
 static Bool
-VIAScreenInit(SCREEN_INIT_ARGS_DECL)
+VIAScreenInit(ScreenPtr pScreen, int argc, char **argv)
 {
     ScrnInfoPtr pScrn = xf86ScreenToScrn(pScreen);
     VIAPtr pVia = VIAPTR(pScrn);

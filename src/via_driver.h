@@ -51,8 +51,6 @@
 #include <pciaccess.h>
 #endif
 
-#include "compat-api.h"
-
 #include "drmmode_display.h"
 
 #include "via_3d.h"
