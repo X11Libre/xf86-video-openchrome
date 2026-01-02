@@ -184,8 +184,8 @@ static XF86ModuleVersionInfo VIAVersRec = {
 
 _X_EXPORT XF86ModuleData openchromeModuleData = { &VIAVersRec, VIASetup, NULL };
 
-static pointer
-VIASetup(pointer module, pointer opts, int *errmaj, int *errmin)
+static void*
+VIASetup(void *module, void *opts, int *errmaj, int *errmin)
 {
     static Bool setupDone = FALSE;
 
@@ -200,7 +200,7 @@ VIASetup(pointer module, pointer opts, int *errmaj, int *errmin)
 #endif
                      );
 
-        return (pointer) 1;
+        return (void*) 1;
     } else {
         if (errmaj)
             *errmaj = LDR_ONCEONLY;
