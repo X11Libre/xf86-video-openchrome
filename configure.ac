@@ -88,17 +88,7 @@ PKG_CHECK_MODULES(XEXT, [xextproto >= 7.1])
 
 sdkdir=$(pkg-config --variable=sdkdir xorg-server)
 
-# Checks for libraries.
-SAVE_CPPFLAGS="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS $XORG_CFLAGS"
-AC_CHECK_DECL(XSERVER_LIBPCIACCESS,
-             [XSERVER_LIBPCIACCESS=yes], [XSERVER_LIBPCIACCESS=no],
-             [#include "xorg-server.h"])
-CPPFLAGS="$SAVE_CPPFLAGS"
-
-if test x$XSERVER_LIBPCIACCESS = xyes; then
-    PKG_CHECK_MODULES([PCIACCESS], [pciaccess >= 0.8.0])
-fi
+PKG_CHECK_MODULES([PCIACCESS], [pciaccess >= 0.8.0])
 
 if test "$DRI" != no; then
     PKG_CHECK_MODULES(DRI, [libdrm >= 2.2 xf86driproto])
@@ -190,11 +180,6 @@ AC_MSG_RESULT([$XVMC])
 AM_CONDITIONAL(XF86DRM_MODE, test "x$DRM_KMS" = xyes)
 
 AM_CONDITIONAL(XVMC, test x$XVMC = xyes)
-
-AM_CONDITIONAL(XSERVER_LIBPCIACCESS, test x$XSERVER_LIBPCIACCESS = xyes)
-if test "$XSERVER_LIBPCIACCESS" = yes; then
-    AC_DEFINE(XSERVER_LIBPCIACCESS, 1, [Enable libpciaccess])
-fi
 
 AM_CONDITIONAL(DEBUG, test x$DEBUG = xyes)
 if test "$DEBUG" = yes; then
