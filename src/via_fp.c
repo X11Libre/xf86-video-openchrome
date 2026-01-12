@@ -1124,7 +1124,6 @@ via_fp_get_modes(xf86OutputPtr output)
     return pDisplay_Mode;
 }
 
-#ifdef RANDR_12_INTERFACE
 static Bool
 via_fp_set_property(xf86OutputPtr output, Atom property,
                         RRPropertyValuePtr value)
@@ -1137,7 +1136,6 @@ via_fp_get_property(xf86OutputPtr output, Atom property)
 {
     return FALSE;
 }
-#endif
 
 static void
 via_fp_destroy(xf86OutputPtr output)
@@ -1159,9 +1157,7 @@ static const xf86OutputFuncsRec via_fp_funcs = {
     .mode_set           = via_fp_mode_set,
     .detect             = via_fp_detect,
     .get_modes          = via_fp_get_modes,
-#ifdef RANDR_12_INTERFACE
     .set_property       = via_fp_set_property,
-#endif
 #ifdef RANDR_13_INTERFACE
     .get_property       = via_fp_get_property,
 #endif
