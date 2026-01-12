@@ -438,9 +438,7 @@ const xf86OutputFuncsRec via_vt1632_funcs = {
     .detect             = via_vt1632_detect,
     .get_modes          = via_vt1632_get_modes,
     .set_property       = via_vt1632_set_property,
-#ifdef RANDR_13_INTERFACE
     .get_property       = via_vt1632_get_property,
-#endif
     .destroy            = via_vt1632_destroy,
 };
 

@@ -400,13 +400,11 @@ via_sii164_set_property(xf86OutputPtr output, Atom property,
     return TRUE;
 }
 
-#ifdef RANDR_13_INTERFACE
 static Bool
 via_sii164_get_property(xf86OutputPtr output, Atom property)
 {
     return FALSE;
 }
-#endif
 
 static void
 via_sii164_destroy(xf86OutputPtr output)
@@ -426,9 +424,7 @@ const xf86OutputFuncsRec via_sii164_funcs = {
     .detect             = via_sii164_detect,
     .get_modes          = via_sii164_get_modes,
     .set_property       = via_sii164_set_property,
-#ifdef RANDR_13_INTERFACE
     .get_property       = via_sii164_get_property,
-#endif
     .destroy            = via_sii164_destroy,
 };
 
