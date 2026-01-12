@@ -731,9 +731,7 @@ via_tv_destroy(xf86OutputPtr output)
 static const xf86OutputFuncsRec via_tv_funcs = {
     .create_resources   = via_tv_create_resources,
     .set_property       = via_tv_set_property,
-#ifdef RANDR_13_INTERFACE
     .get_property       = via_tv_get_property,
-#endif
     .dpms               = via_tv_dpms,
     .save               = via_tv_save,
     .restore            = via_tv_restore,

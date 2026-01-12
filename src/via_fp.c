@@ -1158,9 +1158,7 @@ static const xf86OutputFuncsRec via_fp_funcs = {
     .detect             = via_fp_detect,
     .get_modes          = via_fp_get_modes,
     .set_property       = via_fp_set_property,
-#ifdef RANDR_13_INTERFACE
     .get_property       = via_fp_get_property,
-#endif
     .destroy            = via_fp_destroy
 };
 

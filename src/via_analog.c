@@ -457,13 +457,11 @@ via_analog_set_property(xf86OutputPtr output, Atom property,
     return TRUE;
 }
 
-#ifdef RANDR_13_INTERFACE
 static Bool
 via_analog_get_property(xf86OutputPtr output, Atom property)
 {
     return FALSE;
 }
-#endif
 
 static void
 via_analog_destroy(xf86OutputPtr output)
@@ -483,9 +481,7 @@ static const xf86OutputFuncsRec via_analog_funcs = {
     .detect             = via_analog_detect,
     .get_modes          = via_analog_get_modes,
     .set_property       = via_analog_set_property,
-#ifdef RANDR_13_INTERFACE
     .get_property       = via_analog_get_property,
-#endif
     .destroy            = via_analog_destroy,
 };
 
