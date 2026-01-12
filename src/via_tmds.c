@@ -571,7 +571,6 @@ via_tmds_detect(xf86OutputPtr output)
     return status;
 }
 
-#ifdef RANDR_12_INTERFACE
 static Bool
 via_tmds_set_property(xf86OutputPtr output, Atom property,
                      RRPropertyValuePtr value)
@@ -587,7 +586,6 @@ via_tmds_set_property(xf86OutputPtr output, Atom property,
                         "Exiting via_tmds_set_property.\n"));
     return TRUE;
 }
-#endif
 
 #ifdef RANDR_13_INTERFACE
 static Bool
@@ -626,9 +624,6 @@ via_tmds_destroy(xf86OutputPtr output)
                         "Exiting via_tmds_destroy.\n"));
 }
 
-
-
-
 static const xf86OutputFuncsRec via_tmds_funcs = {
     .create_resources   = via_tmds_create_resources,
     .dpms               = via_tmds_dpms,
@@ -641,9 +636,7 @@ static const xf86OutputFuncsRec via_tmds_funcs = {
     .mode_set           = via_tmds_mode_set,
     .detect             = via_tmds_detect,
     .get_modes          = xf86OutputGetEDIDModes,
-#ifdef RANDR_12_INTERFACE
     .set_property       = via_tmds_set_property,
-#endif
 #ifdef RANDR_13_INTERFACE
     .get_property       = via_tmds_get_property,
 #endif

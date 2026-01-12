@@ -450,14 +450,12 @@ exit:
     return pDisplay_Mode;
 }
 
-#ifdef RANDR_12_INTERFACE
 static Bool
 via_analog_set_property(xf86OutputPtr output, Atom property,
                         RRPropertyValuePtr value)
 {
     return TRUE;
 }
-#endif
 
 #ifdef RANDR_13_INTERFACE
 static Bool
@@ -484,9 +482,7 @@ static const xf86OutputFuncsRec via_analog_funcs = {
     .mode_set           = via_analog_mode_set,
     .detect             = via_analog_detect,
     .get_modes          = via_analog_get_modes,
-#ifdef RANDR_12_INTERFACE
     .set_property       = via_analog_set_property,
-#endif
 #ifdef RANDR_13_INTERFACE
     .get_property       = via_analog_get_property,
 #endif

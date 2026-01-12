@@ -601,7 +601,6 @@ via_tv_create_resources(xf86OutputPtr output)
 {
 }
 
-#ifdef RANDR_12_INTERFACE
 static Bool
 via_tv_set_property(xf86OutputPtr output, Atom property,
                     RRPropertyValuePtr value)
@@ -614,7 +613,6 @@ via_tv_get_property(xf86OutputPtr output, Atom property)
 {
     return FALSE;
 }
-#endif
 
 static void
 via_tv_dpms(xf86OutputPtr output, int mode)
@@ -732,9 +730,7 @@ via_tv_destroy(xf86OutputPtr output)
 
 static const xf86OutputFuncsRec via_tv_funcs = {
     .create_resources   = via_tv_create_resources,
-#ifdef RANDR_12_INTERFACE
     .set_property       = via_tv_set_property,
-#endif
 #ifdef RANDR_13_INTERFACE
     .get_property       = via_tv_get_property,
 #endif

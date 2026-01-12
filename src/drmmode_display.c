@@ -576,10 +576,8 @@ drmmode_output_destroy(xf86OutputPtr output)
 static const xf86OutputFuncsRec drmmode_output_funcs = {
     .dpms               = drmmode_output_dpms,
     .create_resources   = drmmode_output_create_resources,
-#ifdef RANDR_12_INTERFACE
     .set_property       = drmmode_output_set_property,
     .get_property       = drmmode_output_get_property,
-#endif
     .detect             = drmmode_output_detect,
     .mode_valid         = drmmode_output_mode_valid,
     .get_modes          = drmmode_output_get_modes,

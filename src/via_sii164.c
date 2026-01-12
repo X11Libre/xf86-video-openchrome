@@ -393,14 +393,12 @@ via_sii164_get_modes(xf86OutputPtr output)
     return pDisplay_Mode;
 }
 
-#ifdef RANDR_12_INTERFACE
 static Bool
 via_sii164_set_property(xf86OutputPtr output, Atom property,
                      RRPropertyValuePtr value)
 {
     return TRUE;
 }
-#endif
 
 #ifdef RANDR_13_INTERFACE
 static Bool
@@ -427,9 +425,7 @@ const xf86OutputFuncsRec via_sii164_funcs = {
     .mode_set           = via_sii164_mode_set,
     .detect             = via_sii164_detect,
     .get_modes          = via_sii164_get_modes,
-#ifdef RANDR_12_INTERFACE
     .set_property       = via_sii164_set_property,
-#endif
 #ifdef RANDR_13_INTERFACE
     .get_property       = via_sii164_get_property,
 #endif
