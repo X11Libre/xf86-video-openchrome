@@ -112,14 +112,8 @@ VIADRIIrqInit(ScrnInfoPtr pScrn, VIADRIPtr pVIADRI)
 
     pVIADRI->irqEnabled = drmGetInterruptFromBusID
             (pVia->drmmode.fd,
-#ifdef XSERVER_LIBPCIACCESS
              ((pVia->PciInfo->domain << 8) | pVia->PciInfo->bus),
              pVia->PciInfo->dev, pVia->PciInfo->func
-#else
-             ((pciConfigPtr)pVia->PciInfo->thisCard)->busnum,
-             ((pciConfigPtr)pVia->PciInfo->thisCard)->devnum,
-             ((pciConfigPtr)pVia->PciInfo->thisCard)->funcnum
-#endif
             );
     if ((drmCtlInstHandler(pVia->drmmode.fd, pVIADRI->irqEnabled))) {
         xf86DrvMsg(pScrn->scrnIndex, X_WARNING,

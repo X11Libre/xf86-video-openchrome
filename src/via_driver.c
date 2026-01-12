@@ -68,20 +68,14 @@ static const ViaDRMVersion drmVIADRMKMSSupport = { 3, 6, 0 };
 /* Prototypes. */
 static void VIAIdentify(int flags);
 
-#ifdef XSERVER_LIBPCIACCESS
 static Bool via_pci_probe(DriverPtr drv, int entity_num,
                           struct pci_device *dev, intptr_t match_data);
-#else /* !XSERVER_LIBPCIACCESS */
-static Bool VIAProbe(DriverPtr drv, int flags);
-#endif
 
 static Bool VIAPreInit(ScrnInfoPtr pScrn, int flags);
 static Bool VIAScreenInit(ScreenPtr pScreen, int argc, char **argv);
 
 
 int gVIAEntityIndex = -1;
-
-#ifdef XSERVER_LIBPCIACCESS
 
 #define VIA_DEVICE_MATCH(d,i) \
     { 0x1106, (d), PCI_MATCH_ANY, PCI_MATCH_ANY, 0, 0, (i) }
@@ -102,25 +96,17 @@ static const struct pci_id_match via_device_match[] = {
     { 0, 0, 0 },
 };
 
-#endif /* XSERVER_LIBPCIACCESS */
-
 _X_EXPORT DriverRec VIA = {
     VIA_DRIVER_VERSION,
     VIA_DRIVER_NAME,
     VIAIdentify,
-#ifdef XSERVER_LIBPCIACCESS
     NULL,
-#else
-    VIAProbe,
-#endif
     VIAAvailableOptions,
     NULL,
     0,
     NULL,
-#ifdef XSERVER_LIBPCIACCESS
     via_device_match,
     via_pci_probe
-#endif
 };
 
 /* Supported chipsets */
@@ -192,13 +178,7 @@ VIASetup(void *module, void *opts, int *errmaj, int *errmin)
     /* Only be loaded once */
     if (!setupDone) {
         setupDone = TRUE;
-        xf86AddDriver(&VIA, module,
-#ifdef XSERVER_LIBPCIACCESS
-                     HaveDriverFuncs
-#else
-                     0
-#endif
-                     );
+        xf86AddDriver(&VIA, module, HaveDriverFuncs);
 
         return (void*) 1;
     } else {
@@ -419,7 +399,6 @@ VIAIdentify(int flags)
                       VIAChipsets);
 }
 
-#ifdef XSERVER_LIBPCIACCESS
 static Bool
 via_pci_probe(DriverPtr driver, int entity_num,
               struct pci_device *device, intptr_t match_data)
@@ -451,113 +430,6 @@ via_pci_probe(DriverPtr driver, int entity_num,
     }
     return scrn != NULL;
 }
-#else /* !XSERVER_LIBPCIACCESS */
-static Bool
-VIAProbe(DriverPtr drv, int flags)
-{
-    GDevPtr *devSections;
-    int *usedChips;
-    int numDevSections;
-    int numUsed;
-    Bool foundScreen = FALSE;
-    int i;
-
-    /* sanity checks */
-    if ((numDevSections = xf86MatchDevice(DRIVER_NAME, &devSections)) <= 0)
-        return FALSE;
-
-    if (xf86GetPciVideoInfo() == NULL)
-        return FALSE;
-
-    numUsed = xf86MatchPciInstances(DRIVER_NAME,
-                                    PCI_VIA_VENDOR_ID,
-                                    VIAChipsets,
-                                    VIAPciChipsets,
-                                    devSections,
-                                    numDevSections,
-                                    drv,
-                                    &usedChips);
-    free(devSections);
-
-    if (numUsed <= 0)
-        return FALSE;
-
-    xf86Msg(X_NOTICE,
-            "VIA Technologies does not support this driver in any way.\n");
-    xf86Msg(X_NOTICE, "For support, please refer to"
-                      " https://www.freedesktop.org/wiki/Openchrome/.\n");
-
-    if (flags & PROBE_DETECT) {
-        foundScreen = TRUE;
-    } else {
-        for (i = 0; i < numUsed; i++) {
-            ScrnInfoPtr pScrn = xf86AllocateScreen(drv, 0);
-            EntityInfoPtr pEnt;
-
-            if ((pScrn = xf86ConfigPciEntity(pScrn, 0, usedChips[i],
-                                             VIAPciChipsets, 0, 0, 0, 0, 0))) {
-                pScrn->driverVersion = VIA_DRIVER_VERSION;
-                pScrn->driverName = VIA_DRIVER_NAME;
-                pScrn->name = VIA_NAME;
-                pScrn->Probe = VIAProbe;
-                pScrn->PreInit = VIAPreInit;
-                pScrn->ScreenInit = VIAScreenInit;
-                pScrn->SwitchMode = VIASwitchMode;
-                pScrn->AdjustFrame = VIAAdjustFrame;
-                pScrn->EnterVT = VIAEnterVT;
-                pScrn->LeaveVT = VIALeaveVT;
-                pScrn->FreeScreen = VIAFreeScreen;
-                foundScreen = TRUE;
-            }
-#if 0
-            xf86ConfigActivePciEntity(pScrn,
-                                      usedChips[i],
-                                      VIAPciChipsets,
-                                      NULL,
-                                      NULL,
-                                      NULL,
-                                      NULL,
-                                      NULL);
-#endif
-            pEnt = xf86GetEntityInfo(usedChips[i]);
-
-            /* CLE266 supports dual-head; mark the entity as sharable. */
-            if (pEnt->chipset == VIA_CLE266 || pEnt->chipset == VIA_KM400) {
-                static int instance = 0;
-                DevUnion *pPriv;
-
-                xf86SetEntitySharable(usedChips[i]);
-                xf86SetEntityInstanceForScreen(pScrn,
-                                               pScrn->entityList[0], instance);
-
-                if (gVIAEntityIndex < 0) {
-                    gVIAEntityIndex = xf86AllocateEntityPrivateIndex();
-                    pPriv = xf86GetEntityPrivate(pScrn->entityList[0],
-                                                 gVIAEntityIndex);
-
-                    if (!pPriv->ptr) {
-                        VIAEntPtr pVIAEnt;
-
-                        pPriv->ptr = xnfcalloc(sizeof(VIAEntRec), 1);
-                        pVIAEnt = pPriv->ptr;
-                        pVIAEnt->IsDRIEnabled = FALSE;
-                        pVIAEnt->BypassSecondary = FALSE;
-                        pVIAEnt->HasSecondary = FALSE;
-                        pVIAEnt->IsSecondaryRestored = FALSE;
-                    }
-                }
-                instance++;
-            }
-            free(pEnt);
-        }
-    }
-
-    free(usedChips);
-
-    return foundScreen;
-
-} /* VIAProbe */
-#endif /* !XSERVER_LIBPCIACCESS */
 
 static int
 LookupChipSet(PciChipsets *pset, int chipSet)
@@ -846,11 +718,7 @@ viaDrmOpen(ScrnInfoPtr pScrn)
         sprintf(busId,
                 "PCI:%d:%d:%d",
                 pVia->PciInfo->bus,
-#ifdef XSERVER_LIBPCIACCESS
                 pVia->PciInfo->dev,
-#else
-                pVia->PciInfo->device,
-#endif
                 pVia->PciInfo->func);
     }
 
@@ -1009,12 +877,6 @@ VIAPreInit(ScrnInfoPtr pScrn, int flags)
     pVia = VIAPTR(pScrn);
     pVia->IsSecondary = FALSE;
     pEnt = xf86GetEntityInfo(pScrn->entityList[0]);
-#ifndef XSERVER_LIBPCIACCESS
-    if (pEnt->resources) {
-        free(pEnt);
-        goto free_rec;
-    }
-#endif
 
     pVia->EntityIndex = pEnt->index;
 
@@ -1057,9 +919,6 @@ VIAPreInit(ScrnInfoPtr pScrn, int flags)
     }
 
     pVia->PciInfo = xf86GetPciInfoForEntity(pEnt->index);
-#ifndef XSERVER_LIBPCIACCESS
-    xf86RegisterResources(pEnt->index, NULL, ResNone);
-#endif
     if (pEnt->device->chipset && *pEnt->device->chipset) {
         from = X_CONFIG;
         pScrn->chipset = pEnt->device->chipset;
@@ -1087,15 +946,11 @@ VIAPreInit(ScrnInfoPtr pScrn, int flags)
                    pVia->ChipRev);
     } else {
         /* Read PCI bus 0, dev 0, function 0, index 0xF6 to get chip revision */
-#ifdef XSERVER_LIBPCIACCESS
         struct pci_device *bridge = pci_device_get_parent_bridge(pVia->PciInfo);
         uint8_t rev = 0;
 
         pci_device_cfg_read_u8(bridge, &rev, 0xF6);
         pVia->ChipRev = rev;
-#else
-        pVia->ChipRev = pciReadByte(pciTag(0, 0, 0), 0xF6);
-#endif
     }
 
     if (pEnt)
