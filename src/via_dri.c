@@ -62,9 +62,10 @@
 #define VIA_AGP_1X_MODE 0x01
 #define VIA_AGP_FW_MODE 0x10
 
-extern void GlxSetVisualConfigs(int nconfigs,
-                                __GLXvisualConfig * configs,
-                                void **configprivs);
+/* Looked up at run time: current servers no longer provide it. */
+typedef void (*GlxSetVisualConfigsProc)(int nconfigs,
+                                        __GLXvisualConfig * configs,
+                                        void **configprivs);
 
 static char VIAKernelDriverName[] = "via";
 static char VIAClientDriverName[] = "unichrome";
@@ -480,7 +481,10 @@ VIAInitVisualConfigs(ScreenPtr pScreen)
     pVia->numVisualConfigs = numConfigs;
     pVia->pVisualConfigs = pConfigs;
     pVia->pVisualConfigsPriv = pVIAConfigs;
-    GlxSetVisualConfigs(numConfigs, pConfigs, (void **)pVIAConfigPtrs);
+    GlxSetVisualConfigsProc setVisualConfigs =
+        (GlxSetVisualConfigsProc) LoaderSymbol("GlxSetVisualConfigs");
+    if (setVisualConfigs)
+        setVisualConfigs(numConfigs, pConfigs, (void **)pVIAConfigPtrs);
 
     return TRUE;
 }
