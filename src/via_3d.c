@@ -194,7 +194,7 @@ viaSet3DTexture(Via3DState * v3d, int tex, CARD32 offset,
         case via_src:
             vTex->texCsat = (0x01 << 23) | (0x10 << 14) | (0x03 << 7) | 0x00;
             vTex->texAsat = ((0x0B << 14)
-                             | ((PICT_FORMAT_A(format) ? 0x04 : 0x02) << 7)
+                             | ((PICT_FORMAT_A(format) != 0 ? 0x04 : 0x02) << 7)
                              | 0x03);
             vTex->texRCa = 0x00000000;
             vTex->texRAa = 0x00000000;
@@ -203,13 +203,13 @@ viaSet3DTexture(Via3DState * v3d, int tex, CARD32 offset,
         case via_src_onepix_mask:
             vTex->texCsat = (0x01 << 23) | (0x09 << 14) | (0x03 << 7) | 0x00;
             vTex->texAsat = ((0x03 << 14)
-                             | ((PICT_FORMAT_A(format) ? 0x04 : 0x02) << 7)
+                             | ((PICT_FORMAT_A(format) != 0 ? 0x04 : 0x02) << 7)
                              | 0x03);
             break;
         case via_src_onepix_comp_mask:
             vTex->texCsat = (0x01 << 23) | (0x09 << 14) | (0x03 << 7) | 0x00;
             vTex->texAsat = ((0x03 << 14)
-                             | ((PICT_FORMAT_A(format) ? 0x04 : 0x02) << 7)
+                             | ((PICT_FORMAT_A(format) != 0 ? 0x04 : 0x02) << 7)
                              | 0x03);
             break;
         case via_mask:
