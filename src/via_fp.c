@@ -809,10 +809,8 @@ viaFPIOAdjustment(ScrnInfoPtr pScrn,
         }
     }
 
-    if (isDPATableExist) {
-        if (viaDPAIndexTable[i].pFPDPATable) {
-            pVIADPAInfoTable = viaDPAIndexTable[i].pFPDPATable;
-        }
+    if (isDPATableExist && viaDPAIndexTable[i].pFPDPATable) {
+        pVIADPAInfoTable = viaDPAIndexTable[i].pFPDPATable;
 
         clockRangeIndex = viaGetClockRangeIndex(Clock);
 
