@@ -159,9 +159,9 @@ static XF86ModuleVersionInfo VIAVersRec = {
 #else
     XF86_VERSION_CURRENT,
 #endif
-    PACKAGE_VERSION_MAJOR,
-    PACKAGE_VERSION_MINOR,
-    PACKAGE_VERSION_PATCHLEVEL,
+    VIA_VERSION_MAJOR,
+    VIA_VERSION_MINOR,
+    VIA_VERSION_PATCH,
     ABI_CLASS_VIDEODRV,
     ABI_VIDEODRV_VERSION,
     MOD_CLASS_VIDEODRV,
@@ -169,6 +169,10 @@ static XF86ModuleVersionInfo VIAVersRec = {
 };
 
 _X_EXPORT XF86ModuleData openchromeModuleData = { &VIAVersRec, VIASetup, NULL };
+
+#ifdef XF86_MODULE_VERSION_SUFFIX
+XF86_MODULE_VERSION_SUFFIX(openchrome, VIA_VERSION_SUFFIX);
+#endif
 
 static void*
 VIASetup(void *module, void *opts, int *errmaj, int *errmin)

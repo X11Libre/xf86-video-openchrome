@@ -75,9 +75,13 @@
 
 #define VIA_NAME            "OpenChrome"
 #define VIA_DRIVER_NAME     "openchrome"
-#define VIA_DRIVER_VERSION  (PACKAGE_VERSION_MAJOR << 24) | \
-                            (PACKAGE_VERSION_MINOR << 16) | \
-                            PACKAGE_VERSION_PATCHLEVEL
+#define VIA_VERSION_MAJOR   PACKAGE_VERSION_MAJOR
+#define VIA_VERSION_MINOR   PACKAGE_VERSION_MINOR
+#define VIA_VERSION_PATCH   PACKAGE_VERSION_PATCHLEVEL
+#define VIA_VERSION_SUFFIX  PACKAGE_VERSION_SUFFIX
+#define VIA_DRIVER_VERSION  (VIA_VERSION_MAJOR << 24) | \
+                            (VIA_VERSION_MINOR << 16) | \
+                            VIA_VERSION_PATCH
 
 #define VIA_DRM_DRIVER_NAME     "via"
 
