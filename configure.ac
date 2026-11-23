@@ -46,7 +46,7 @@ AC_DEFINE_UNQUOTED([PACKAGE_VERSION_SUFFIX], ["$version_suffix"],
 
 # Initialize libtool
 AC_DISABLE_STATIC
-AC_PROG_LIBTOOL
+LT_INIT
 
 AH_TOP([#include "xorg-server.h"])
 

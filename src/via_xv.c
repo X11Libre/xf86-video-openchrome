@@ -586,7 +586,7 @@ viaExitVideo(ScrnInfoPtr pScrn)
 
     DBG_DD(ErrorF(" via_xv.c : viaExitVideo : \n"));
 
-#ifdef OPENCHROMEDRI
+#ifdef ENABLE_XVMC
     ViaCleanupXVMC(pScrn, viaAdaptPtr, XV_ADAPT_NUM);
 #endif
 
@@ -694,7 +694,7 @@ viaInitVideo(ScreenPtr pScreen)
 
     if (num_adaptors) {
         xf86XVScreenInit(pScreen, allAdaptors, num_adaptors);
-#ifdef OPENCHROMEDRI
+#ifdef ENABLE_XVMC
         ViaInitXVMC(pScreen);
 #endif
         viaSetColorSpace(pVia, 0, 0, 0, 0, TRUE);
@@ -785,7 +785,7 @@ viaSetupAdaptors(ScreenPtr pScreen, XF86VideoAdaptorPtr ** adaptors)
         }
         usedPorts += j;
 
-#ifdef OPENCHROMEDRI
+#ifdef ENABLE_XVMC
         viaXvMCInitXv(pScrn, viaAdaptPtr[i]);
 #endif
 
@@ -1438,7 +1438,7 @@ viaQueryImageAttributes(ScrnInfoPtr pScrn,
             break;
         case FOURCC_XVMC:
             *h = (*h + 1) & ~1;
-#ifdef OPENCHROMEDRI
+#ifdef ENABLE_XVMC
             size = viaXvMCPutImageSize(pScrn);
 #else
             size = 0;
